@@ -29,9 +29,9 @@ class Autoencoder(nn.Module):
                 autograd.Variable(torch.zeros(1, 1, hid_size)))
 
     def forward(self, inp):
-        embeds = self.word_embeddings(inp)
         if self.is_cuda:
-            embed = embed.cuda()
+            inp = inp.cuda()
+        embeds = self.word_embeddings(inp)
         opt, hid = self.lstm(embeds.view(len(inp), 1, -1), self.hidden)
         opt = self.linear(opt)
         return opt, embeds, hid[0].view(1, self.hid_size)
